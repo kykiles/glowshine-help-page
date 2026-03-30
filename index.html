@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Инструкция по подключению VPN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <span class="nav__logo">
+        <span class="nav__logo-mark">◆</span>
+        <span>glowshine</span>
+      </span>
+      <span class="nav__status">
+        <span class="nav__dot"></span>
+        sys.online
+      </span>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="container">
+        <div class="hero__eyebrow">
+          <span class="tag">setup_guide.md</span>
+          <span class="tag tag--dim">happ proxy · glowshine vpn</span>
+        </div>
+        <h1 class="hero__title">Инструкция<br>по подключению<br><em>VPN</em></h1>
+        <p class="hero__sub">Получи ключ в боте — и подключи его в приложении Happ Proxy.</p>
+        <div class="hero__ctas">
+          <a href="https://t.me/glowshine_bot" class="btn btn--primary" target="_blank" rel="noopener">
+            <span class="btn__prefix">$</span> Открыть бот
+          </a>
+          <a href="#step-1" class="btn btn--outline">Начать ↓</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- STEPS -->
+    <section class="steps" id="steps">
+      <div class="container">
+
+        <div class="section-head">
+          <span class="section-num">// 01</span>
+          <h2 class="section-title">Пошаговая инструкция</h2>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step" id="step-1">
+          <div class="step__left">
+            <div class="step__num">01</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__right">
+            <div class="step__head">
+              <span class="step__tag">telegram</span>
+              <h3 class="step__title">Скопируйте ключ</h3>
+            </div>
+            <ol class="step__list">
+              <li>Откройте Telegram-бот и перейдите в меню.</li>
+              <li>Нажмите кнопку <span class="chip">🔑 Обновить</span> или введите <code>/start</code>.</li>
+              <li>В сообщении бота найдите <code>🔗 Твоя ссылка для подключения</code>.</li>
+              <li>Нажмите на ключ, чтобы скопировать его в буфер обмена.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step" id="step-2">
+          <div class="step__left">
+            <div class="step__num">02</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__right">
+            <div class="step__head">
+              <span class="step__tag">happ proxy</span>
+              <h3 class="step__title">Скачайте приложение</h3>
+            </div>
+            <p class="step__desc">Установите приложение <strong>Happ / Happ Proxy</strong> для своей платформы:</p>
+            <div class="dl-row">
+              <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215?l=ru" class="dl-card" target="_blank" rel="noopener">
+                <span class="dl-card__icon">🍏</span>
+                <span class="dl-card__os">iOS</span>
+                <span class="dl-card__store">App Store ↗</span>
+              </a>
+              <a href="https://play.google.com/store/apps/details?id=com.happproxy" class="dl-card" target="_blank" rel="noopener">
+                <span class="dl-card__icon">🤖</span>
+                <span class="dl-card__os">Android</span>
+                <span class="dl-card__store">Google Play ↗</span>
+              </a>
+              <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" class="dl-card" target="_blank" rel="noopener">
+                <span class="dl-card__icon">💻</span>
+                <span class="dl-card__os">Windows</span>
+                <span class="dl-card__store">Скачать .exe ↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step" id="step-3">
+          <div class="step__left">
+            <div class="step__num">03</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__right">
+            <div class="step__head">
+              <span class="step__tag">импорт</span>
+              <h3 class="step__title">Вставьте ключ</h3>
+            </div>
+            <ol class="step__list">
+              <li>Откройте скачанное приложение.</li>
+              <li>Найдите кнопку <strong>Добавить профиль</strong> — обычно это <span class="chip">+</span> в правом верхнем углу.</li>
+              <li>Выберите опцию <strong>Вставить из буфера обмена</strong> <span class="muted">(Import from Clipboard)</span>.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step step--last" id="step-4">
+          <div class="step__left">
+            <div class="step__num">04</div>
+          </div>
+          <div class="step__right">
+            <div class="step__head">
+              <span class="step__tag">подключение</span>
+              <h3 class="step__title">Подключитесь</h3>
+            </div>
+            <ol class="step__list">
+              <li>Выберите только что добавленный профиль в списке.</li>
+              <li>Нажмите большую кнопку <strong>Подключить</strong>.</li>
+              <li>При первом подключении телефон может запросить разрешение на добавление VPN-конфигурации — нажмите <strong>Разрешить</strong> <span class="muted">(Allow)</span>.</li>
+            </ol>
+
+            <div class="callout callout--success">
+              🎉 <strong>Готово!</strong> Значок VPN должен появиться в верхней панели вашего экрана.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TROUBLESHOOTING -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-num">// 02</span>
+          <h2 class="section-title">Возможные проблемы</h2>
+        </div>
+
+        <div class="faq__grid">
+
+          <details class="faq-item">
+            <summary class="faq-item__q">
+              <span class="faq-item__icon">›</span>
+              Не подключается
+            </summary>
+            <div class="faq-item__a">
+              Выключите VPN, обновите подписку в боте, скопируйте новый ключ и добавьте его заново — предварительно удалив старый профиль.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">
+              <span class="faq-item__icon">›</span>
+              Нет интернета после подключения
+            </summary>
+            <div class="faq-item__a">
+              Попробуйте переключиться между мобильным интернетом и Wi-Fi, либо перезагрузите телефон.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">
+              <span class="faq-item__icon">›</span>
+              Ничего не помогает
+            </summary>
+            <div class="faq-item__a">
+              Напишите в поддержку бота через команду <code>/sup</code> в меню — опишите проблему, и мы поможем.
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPORT CTA -->
+    <section class="support" id="support">
+      <div class="container">
+        <div class="support__inner">
+          <div class="support__left">
+            <div class="support__eyebrow">// нужна помощь?</div>
+            <h2 class="support__title">Что-то пошло не так?<br>Мы в боте.</h2>
+            <p class="support__desc">
+              Напиши в <a href="https://t.me/glowshine_bot" class="link" target="_blank" rel="noopener">@glowshine_bot</a> через команду <code>/sup</code> и опиши проблему. Поддержка отвечает быстро.
+            </p>
+            <a href="https://t.me/glowshine_bot" class="btn btn--primary" target="_blank" rel="noopener">
+              <span class="btn__prefix">$</span> Открыть @glowshine_bot
+            </a>
+          </div>
+          <div class="support__right" aria-hidden="true">
+            <div class="term">
+              <div class="term__bar">
+                <span class="term__dots"><i></i><i></i><i></i></span>
+                <span class="term__title">glowshine_vpn — shell</span>
+              </div>
+              <div class="term__body">
+                <p class="term__line"><span class="term__p">~</span> <span class="term__cmd">connect --vpn</span></p>
+                <p class="term__line term__line--out"><span class="term__key">resolving </span> <span class="term__val">...</span></p>
+                <p class="term__line term__line--out"><span class="term__key">handshake </span> <span class="term__val term__val--ok">OK</span></p>
+                <p class="term__line term__line--out"><span class="term__key">tunnel    </span> <span class="term__val term__val--ok">ACTIVE ✓</span></p>
+                <p class="term__line"><span class="term__p">~</span> <span class="term__cursor">█</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="nav__logo-mark">◆</span>
+      <a href="https://t.me/glowshine_bot" class="footer__bot" target="_blank" rel="noopener">@glowshine_bot</a>
+      <span class="footer__copy">* + / ○ * _</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
