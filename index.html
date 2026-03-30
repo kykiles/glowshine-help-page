@@ -1,622 +1,319 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="format-detection" content="telephone=no">
-  <title>Инструкция по подключению VPN</title>
-  <style>
-    /* ── Google Fonts с display=swap чтобы не блокировать рендер ── */
-    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Инструкция по подключению VPN</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            /* Telegram WebApp Theme Variables with fallbacks */
+            --bg-color: var(--tg-theme-bg-color, #f1f1f1);
+            --secondary-bg-color: var(--tg-theme-secondary-bg-color, #ffffff);
+            --text-color: var(--tg-theme-text-color, #222222);
+            --hint-color: var(--tg-theme-hint-color, #888888);
+            --link-color: var(--tg-theme-link-color, #3390ec);
+            --button-color: var(--tg-theme-button-color, #3390ec);
+            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
 
-    /* ============================================================
-       TOKENS
-       ============================================================ */
-    :root {
-      --black:      #060908;
-      --surface:    #0d1310;
-      --surface-2:  #111a14;
-      --border:     rgba(41,255,100,.12);
-      --border-mid: rgba(41,255,100,.24);
-      --border-hi:  rgba(41,255,100,.46);
-      --green:      #29ff64;
-      --green-dim:  rgba(41,255,100,.55);
-      --green-glow: rgba(41,255,100,.10);
-      --white:      #f0f5f1;
-      --white-2:    rgba(240,245,241,.72);
-      --white-3:    rgba(240,245,241,.36);
-      --white-4:    rgba(240,245,241,.10);
-      --font-head:  'Syne', -apple-system, 'Helvetica Neue', sans-serif;
-      --font-mono:  'JetBrains Mono', 'Courier New', monospace;
-      --r:  6px;
-      --r-lg: 14px;
-      /* safe area для iPhone notch / Android nav */
-      --safe-t: env(safe-area-inset-top, 0px);
-      --safe-b: env(safe-area-inset-bottom, 0px);
-      --safe-l: env(safe-area-inset-left, 0px);
-      --safe-r: env(safe-area-inset-right, 0px);
-    }
+            /* Responsive Fluid Spacing & Typography */
+            --space-sm: clamp(0.5rem, 1.5vw, 0.75rem);
+            --space-md: clamp(1rem, 2.5vw, 1.25rem);
+            --space-lg: clamp(1.5rem, 4vw, 2rem);
 
-    /* ============================================================
-       RESET & BASE
-       ============================================================ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+            --text-sm: clamp(0.875rem, 2vw, 0.95rem);
+            --text-base: clamp(1rem, 2.5vw, 1.1rem);
+            --text-lg: clamp(1.15rem, 3.5vw, 1.3rem);
+            --text-xl: clamp(1.4rem, 4.5vw, 1.8rem);
+        }
 
-    html {
-      scroll-behavior: smooth;
-      /* запрещаем горизонтальный скролл в Telegram WebView */
-      overflow-x: hidden;
-    }
+        /* Base Reset & Native Feel */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: var(--font-mono);
-      font-size: 15px;
-      line-height: 1.7;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      /* safe area padding */
-      padding-left:  var(--safe-l);
-      padding-right: var(--safe-r);
-      padding-bottom: calc(var(--safe-b) + 24px);
-      /* убираем tap highlight в Telegram */
-      -webkit-tap-highlight-color: transparent;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: var(--space-md);
+            overflow-x: hidden;
+            transition: background-color 0.2s, color 0.2s;
+        }
 
-    /* Ambient фон — НЕ fixed, а absolute, чтобы не глючил в TG WebView */
-    .bg-blob-1, .bg-blob-2 {
-      position: absolute;
-      pointer-events: none;
-      z-index: 0;
-      border-radius: 50%;
-    }
-    .bg-blob-1 {
-      bottom: 0; left: -10%;
-      width: 70vw; height: 70vw;
-      background: radial-gradient(ellipse, rgba(14,60,28,.8) 0%, transparent 68%);
-    }
-    .bg-blob-2 {
-      top: 0; right: -15%;
-      width: 55vw; height: 55vw;
-      background: radial-gradient(ellipse, rgba(10,40,18,.55) 0%, transparent 65%);
-    }
+        /* Container Layout */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--secondary-bg-color);
+            padding: var(--space-lg);
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        }
 
-    /* ── Layout ── */
-    .wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+        /* Text Elements */
+        h1 {
+            text-align: center;
+            font-size: var(--text-xl);
+            margin-top: 0;
+            margin-bottom: var(--space-lg);
+            font-weight: 700;
+        }
 
-    /* ── Typography ── */
-    a { color: inherit; text-decoration: none; }
-    .link { color: var(--green); border-bottom: 1px solid var(--border-mid); }
+        p {
+            font-size: var(--text-base);
+            margin: 0 0 var(--space-sm) 0;
+        }
 
-    code {
-      font-family: var(--font-mono);
-      font-size: .85em;
-      background: var(--white-4);
-      border: 1px solid var(--border);
-      padding: 1px 7px;
-      border-radius: 3px;
-      color: var(--green);
-      word-break: break-all;
-    }
-    strong { color: var(--white); font-weight: 700; }
-    .muted  { color: var(--white-3); }
+        code {
+            background-color: rgba(128, 128, 128, 0.15);
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+            font-size: calc(var(--text-base) * 0.9);
+            color: var(--text-color);
+        }
 
-    .tag {
-      display: inline-block;
-      font-size: 10px; color: var(--green-dim);
-      letter-spacing: .09em; text-transform: uppercase;
-      border: 1px solid var(--border);
-      padding: 3px 10px; border-radius: 3px;
-    }
-    .tag--dim { color: var(--white-3); border-color: transparent; }
+        /* Steps Layout */
+        .step {
+            margin-bottom: var(--space-lg);
+        }
 
-    .chip {
-      display: inline-block; font-size: 12px;
-      background: var(--white-4); border: 1px solid var(--border);
-      padding: 1px 8px; border-radius: 4px; color: var(--white-2);
-    }
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: var(--text-lg);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
 
-    /* ============================================================
-       HEADER — без sticky, TG уже даёт свой topbar
-       ============================================================ */
-    .site-header {
-      padding: 28px 0 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
-      margin-bottom: 0;
-    }
-    .logo {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 14px; font-weight: 700;
-    }
-    .logo__mark { color: var(--green); font-size: 16px; }
-    .status {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 11px; color: var(--white-3); letter-spacing: .05em;
-    }
-    .status__dot {
-      width: 6px; height: 6px;
-      background: var(--green); border-radius: 50%;
-      animation: pulse 2.2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(41,255,100,.4); }
-      50%      { opacity:.7; box-shadow: 0 0 0 5px rgba(41,255,100,0); }
-    }
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+            border-radius: 50%;
+            font-size: var(--text-base);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
 
-    /* ============================================================
-       HERO
-       ============================================================ */
-    .hero {
-      padding: 36px 0 32px;
-    }
-    .hero__eyebrow {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-    .hero__title {
-      font-family: var(--font-head);
-      font-size: clamp(34px, 10vw, 52px);
-      font-weight: 800; line-height: 1.05;
-      letter-spacing: -.03em; margin-bottom: 14px;
-    }
-    .hero__title em { font-style: normal; color: var(--green); }
-    .hero__sub {
-      font-size: 14px; color: var(--white-2);
-      line-height: 1.75; margin-bottom: 24px;
-    }
-    .hero__ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+        ol {
+            margin: 0;
+            padding-left: 1.5rem;
+            font-size: var(--text-base);
+            color: var(--hint-color);
+            /* To make bullets less aggressive */
+        }
 
-    /* ============================================================
-       BUTTONS
-       — крупнее обычного, удобно тапать на мобиле
-       ============================================================ */
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--font-mono); font-size: 14px; font-weight: 700;
-      letter-spacing: .02em;
-      /* минимум 48px высота — тап-таргет по HIG */
-      min-height: 48px;
-      padding: 0 22px; border-radius: var(--r);
-      cursor: pointer; border: none; text-decoration: none;
-      /* убираем глюки с active-state в TG */
-      -webkit-user-select: none; user-select: none;
-    }
-    .btn--primary { background: var(--green); color: #000; }
-    .btn--primary:active { opacity: .85; }
-    .btn--outline {
-      background: transparent; color: var(--white);
-      border: 1px solid var(--border-mid);
-    }
-    .btn--outline:active { background: var(--green-glow); }
-    .btn__prefix { color: rgba(0,0,0,.4); margin-right: 1px; }
-    .btn--outline .btn__prefix { color: var(--green-dim); }
+        ol li {
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
 
-    /* ============================================================
-       SECTION HEADS
-       ============================================================ */
-    .section-block {
-      padding: 36px 0;
-      border-top: 1px solid var(--border);
-    }
-    .section-num {
-      display: block; font-size: 10px; color: var(--green-dim);
-      letter-spacing: .12em; margin-bottom: 8px;
-    }
-    .section-title {
-      font-family: var(--font-head);
-      font-size: clamp(22px, 5vw, 28px);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -.02em; margin-bottom: 28px;
-    }
+        ol li span {
+            color: var(--text-color);
+            /* Keeping text normal while bullets are hint */
+        }
 
-    /* ============================================================
-       STEPS
-       ============================================================ */
-    .steps-list {
-      display: flex; flex-direction: column;
-    }
-    .step {
-      display: grid;
-      grid-template-columns: 46px 1fr;
-      gap: 0 16px;
-      padding-bottom: 36px;
-    }
-    .step--last { padding-bottom: 0; }
+        /* Responsive Grid for Buttons */
+        .app-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
 
-    .step__left {
-      display: flex; flex-direction: column; align-items: center;
-    }
-    .step__num {
-      width: 38px; height: 38px;
-      border: 1px solid var(--border-mid); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: var(--green);
-      background: var(--surface); flex-shrink: 0; letter-spacing: .06em;
-    }
-    .step__line {
-      flex: 1; width: 1px;
-      background: linear-gradient(to bottom, var(--border-mid), transparent);
-      margin: 8px 0; min-height: 24px;
-    }
+        .app-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+            text-decoration: none;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: var(--text-sm);
+            transition: opacity 0.2s, transform 0.1s;
+        }
 
-    .step__tag {
-      display: inline-block; font-size: 10px; color: var(--green-dim);
-      letter-spacing: .1em; text-transform: uppercase;
-      border: 1px solid var(--border); padding: 2px 8px; border-radius: 3px;
-      margin-bottom: 8px;
-    }
-    .step__title {
-      font-family: var(--font-head);
-      font-size: 18px; font-weight: 800;
-      letter-spacing: -.01em; margin-bottom: 12px;
-    }
-    .step__desc {
-      font-size: 14px; color: var(--white-2); line-height: 1.7;
-      margin-bottom: 14px;
-    }
+        .app-links a:active {
+            transform: scale(0.97);
+            opacity: 0.9;
+        }
 
-    /* Список внутри шага */
-    .step__list {
-      list-style: none; padding: 0;
-      display: flex; flex-direction: column; gap: 10px;
-      counter-reset: sc;
-    }
-    .step__list li {
-      counter-increment: sc;
-      display: flex; gap: 12px; align-items: flex-start;
-      font-size: 14px; color: var(--white-2); line-height: 1.65;
-    }
-    .step__list li::before {
-      content: counter(sc, decimal-leading-zero);
-      font-size: 10px; font-weight: 700; color: var(--green);
-      background: var(--green-glow); border: 1px solid var(--border-mid);
-      min-width: 28px; height: 22px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 3px; flex-shrink: 0; margin-top: 2px; letter-spacing: .04em;
-    }
+        /* Highlight & Alert Components */
+        .highlight {
+            background-color: rgba(51, 144, 236, 0.1);
+            border: 1px solid rgba(51, 144, 236, 0.15);
+            padding: var(--space-md);
+            border-radius: 16px;
+            margin: var(--space-lg) 0;
+            text-align: center;
+            font-size: var(--text-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* ── Карточки скачивания ── */
-    .dl-row {
-      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px;
-    }
-    .dl-card {
-      display: flex; flex-direction: column; gap: 3px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 14px 18px;
-      flex: 1; min-width: 100px;
-      /* большой tap target */
-      min-height: 72px; justify-content: center;
-      /* убираем tap highlight */
-      -webkit-tap-highlight-color: transparent;
-    }
-    .dl-card:active { background: rgba(41,255,100,.05); border-color: var(--border-hi); }
-    .dl-card__icon  { font-size: 20px; }
-    .dl-card__os    { font-size: 13px; font-weight: 700; color: var(--white); }
-    .dl-card__store { font-size: 11px; color: var(--green-dim); }
+        .troubleshooting {
+            background-color: rgba(230, 126, 34, 0.08);
+            /* Warm accent */
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            padding: var(--space-md);
+            border-radius: 16px;
+        }
 
-    /* ── Callout ── */
-    .callout {
-      border-radius: var(--r-lg); padding: 14px 18px;
-      font-size: 14px; line-height: 1.65; margin-top: 16px;
-    }
-    .callout--success {
-      background: rgba(41,255,100,.07);
-      border: 1px solid rgba(41,255,100,.25);
-      color: var(--white-2);
-    }
-    .callout--success strong { color: var(--green); }
+        .troubleshooting-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* ============================================================
-       FAQ
-       ============================================================ */
-    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+        .troubleshooting ul {
+            padding-left: 1.25rem;
+            margin: 0;
+            font-size: var(--text-sm);
+        }
 
-    .faq-item {
-      border: 1px solid var(--border); border-radius: var(--r);
-      background: var(--surface); overflow: hidden;
-    }
-    .faq-item[open] { border-color: var(--border-mid); }
+        .troubleshooting li {
+            margin-bottom: 8px;
+        }
 
-    .faq-item__q {
-      display: flex; align-items: center; gap: 12px;
-      /* минимум 48px для удобного тапа */
-      min-height: 52px;
-      padding: 14px 18px; cursor: pointer;
-      font-size: 14px; font-weight: 700; color: var(--white);
-      list-style: none; -webkit-user-select: none; user-select: none;
-    }
-    .faq-item__q::-webkit-details-marker { display: none; }
-    .faq-item__icon {
-      color: var(--green); font-size: 16px;
-      transition: transform .2s; flex-shrink: 0;
-    }
-    .faq-item[open] .faq-item__icon { transform: rotate(90deg); }
-
-    .faq-item__a {
-      padding: 14px 18px 18px 44px;
-      font-size: 14px; color: var(--white-2); line-height: 1.75;
-      border-top: 1px solid var(--border);
-    }
-
-    /* ============================================================
-       SUPPORT / CTA — только левая колонка, без терминала
-       (терминал убран: на маленьком экране он лишний)
-       ============================================================ */
-    .support {
-      padding: 36px 0;
-      border-top: 1px solid var(--border);
-    }
-    .support__eyebrow {
-      font-size: 10px; color: var(--green-dim);
-      letter-spacing: .12em; margin-bottom: 12px;
-    }
-    .support__title {
-      font-family: var(--font-head);
-      font-size: clamp(22px, 5vw, 30px);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -.02em; margin-bottom: 12px;
-    }
-    .support__desc {
-      font-size: 14px; color: var(--white-2);
-      line-height: 1.7; margin-bottom: 20px;
-    }
-
-    /* ============================================================
-       FOOTER
-       ============================================================ */
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: 20px 0 8px;
-      display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 10px;
-    }
-    .footer__brand {
-      display: flex; align-items: center; gap: 8px;
-    }
-    .footer__bot {
-      font-size: 13px; font-weight: 700; color: var(--green);
-    }
-    .footer__copy {
-      font-size: 11px; color: var(--white-4); letter-spacing: .08em;
-    }
-  </style>
+        /* Icon Utility */
+        .icon {
+            font-size: 1.2em;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="container">
+        <h1>Инструкция по подключению</h1>
 
-  <!-- ambient blobs — absolute, не fixed -->
-  <div style="position:relative; overflow:hidden;">
-    <div class="bg-blob-1"></div>
-    <div class="bg-blob-2"></div>
-
-    <div class="wrap">
-
-      <!-- HEADER -->
-      <header class="site-header">
-        <span class="logo">
-          <span class="logo__mark">◆</span>
-          <span>glowshine</span>
-        </span>
-        <span class="status">
-          <span class="status__dot"></span>
-          sys.online
-        </span>
-      </header>
-
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero__eyebrow">
-          <span class="tag">setup_guide.md</span>
-          <span class="tag tag--dim">happ proxy · glowshine vpn</span>
+        <!-- Step 1 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">1</div>
+                Скопируйте ключ
+            </div>
+            <ol>
+                <li><span>Откройте меню бота в Telegram.</span></li>
+                <li><span>Нажмите кнопку <strong>🔑 Обновить</strong> (или <code>/start</code>).</span></li>
+                <li><span>В сообщении бота найдите <code>🔗 Твоя ссылка для подключения</code>.</span></li>
+                <li><span>Нажмите на ключ (ссылку <code>https://...</code>), чтобы скопировать его в буфер
+                        обмена.</span></li>
+            </ol>
         </div>
-        <h1 class="hero__title">Инструкция<br>по подключению<br><em>VPN</em></h1>
-        <p class="hero__sub">Получи ключ в боте — и подключи его в приложении Happ Proxy.</p>
-        <div class="hero__ctas">
-          <a href="https://t.me/glowshine_bot" class="btn btn--primary">
-            <span class="btn__prefix">$</span> Открыть бот
-          </a>
-          <a href="#step-1" class="btn btn--outline">Начать ↓</a>
-        </div>
-      </section>
 
-      <!-- STEPS -->
-      <section class="section-block" id="steps">
-        <span class="section-num">// 01</span>
-        <h2 class="section-title">Пошаговая инструкция</h2>
-
-        <div class="steps-list">
-
-          <!-- 01 -->
-          <div class="step" id="step-1">
-            <div class="step__left">
-              <div class="step__num">01</div>
-              <div class="step__line"></div>
+        <!-- Step 2 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">2</div>
+                Скачайте приложение
             </div>
-            <div class="step__right">
-              <span class="step__tag">telegram</span>
-              <h3 class="step__title">Скопируйте ключ</h3>
-              <ol class="step__list">
-                <li>Откройте Telegram-бот и перейдите в меню.</li>
-                <li>Нажмите кнопку <span class="chip">🔑 Обновить</span> или введите <code>/start</code>.</li>
-                <li>В сообщении бота найдите <code>🔗 Твоя ссылка для подключения</code>.</li>
-                <li>Нажмите на ключ, чтобы скопировать его в буфер обмена.</li>
-              </ol>
-            </div>
-          </div>
-
-          <!-- 02 -->
-          <div class="step" id="step-2">
-            <div class="step__left">
-              <div class="step__num">02</div>
-              <div class="step__line"></div>
-            </div>
-            <div class="step__right">
-              <span class="step__tag">happ proxy</span>
-              <h3 class="step__title">Скачайте приложение</h3>
-              <p class="step__desc">Установите <strong>Happ / Happ Proxy</strong> для своей платформы:</p>
-              <div class="dl-row">
-                <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215?l=ru" class="dl-card">
-                  <span class="dl-card__icon">🍏</span>
-                  <span class="dl-card__os">iOS</span>
-                  <span class="dl-card__store">App Store ↗</span>
+            <p>Установите клиентское приложение <strong>Happ/Happ Proxy</strong>:</p>
+            <div class="app-links">
+                <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215?l=ru" target="_blank">
+                    <span class="icon">🍏</span> iOS
                 </a>
-                <a href="https://play.google.com/store/apps/details?id=com.happproxy" class="dl-card">
-                  <span class="dl-card__icon">🤖</span>
-                  <span class="dl-card__os">Android</span>
-                  <span class="dl-card__store">Google Play ↗</span>
+                <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">
+                    <span class="icon">🤖</span> Android
                 </a>
-                <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" class="dl-card">
-                  <span class="dl-card__icon">💻</span>
-                  <span class="dl-card__os">Windows</span>
-                  <span class="dl-card__store">Скачать .exe ↗</span>
+                <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe"
+                    target="_blank">
+                    <span class="icon">💻</span> Windows
                 </a>
-              </div>
             </div>
-          </div>
-
-          <!-- 03 -->
-          <div class="step" id="step-3">
-            <div class="step__left">
-              <div class="step__num">03</div>
-              <div class="step__line"></div>
-            </div>
-            <div class="step__right">
-              <span class="step__tag">импорт</span>
-              <h3 class="step__title">Вставьте ключ</h3>
-              <ol class="step__list">
-                <li>Откройте скачанное приложение.</li>
-                <li>Найдите кнопку <strong>Добавить профиль</strong> — обычно это <span class="chip">+</span> в правом верхнем углу.</li>
-                <li>Выберите <strong>Вставить из буфера обмена</strong> <span class="muted">(Import from Clipboard)</span>.</li>
-              </ol>
-            </div>
-          </div>
-
-          <!-- 04 -->
-          <div class="step step--last" id="step-4">
-            <div class="step__left">
-              <div class="step__num">04</div>
-            </div>
-            <div class="step__right">
-              <span class="step__tag">подключение</span>
-              <h3 class="step__title">Подключитесь</h3>
-              <ol class="step__list">
-                <li>Выберите только что добавленный профиль в списке.</li>
-                <li>Нажмите большую кнопку <strong>Подключить</strong>.</li>
-                <li>При первом подключении телефон запросит разрешение на VPN-конфигурацию — нажмите <strong>Разрешить</strong> <span class="muted">(Allow)</span>.</li>
-              </ol>
-              <div class="callout callout--success">
-                🎉 <strong>Готово!</strong> Значок VPN должен появиться в верхней панели экрана.
-              </div>
-            </div>
-          </div>
-
         </div>
-      </section>
 
-      <!-- FAQ -->
-      <section class="section-block" id="faq">
-        <span class="section-num">// 02</span>
-        <h2 class="section-title">Возможные проблемы</h2>
-
-        <div class="faq-list">
-          <details class="faq-item">
-            <summary class="faq-item__q">
-              <span class="faq-item__icon">›</span>
-              Не подключается
-            </summary>
-            <div class="faq-item__a">
-              Выключите VPN, обновите подписку в боте, скопируйте новый ключ и добавьте его заново — предварительно удалив старый профиль.
+        <!-- Step 3 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">3</div>
+                Вставьте ключ
             </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-item__q">
-              <span class="faq-item__icon">›</span>
-              Нет интернета после подключения
-            </summary>
-            <div class="faq-item__a">
-              Попробуйте переключиться между мобильным интернетом и Wi-Fi, либо перезагрузите телефон.
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-item__q">
-              <span class="faq-item__icon">›</span>
-              Ничего не помогает
-            </summary>
-            <div class="faq-item__a">
-              Напишите в поддержку через команду <code>/sup</code> в меню бота — опишите проблему, и мы поможем.
-            </div>
-          </details>
+            <ol>
+                <li><span>Откройте скачанное приложение.</span></li>
+                <li><span>В приложении найдите кнопку <strong>Добавить профиль</strong> (обычно это <strong>+</strong> в
+                        правом верхнем углу).</span></li>
+                <li><span>Выберите опцию <strong>Вставить из буфера обмена</strong> (Import from Clipboard).</span></li>
+            </ol>
         </div>
-      </section>
 
-      <!-- SUPPORT -->
-      <section class="support" id="support">
-        <div class="support__eyebrow">// нужна помощь?</div>
-        <h2 class="support__title">Что-то пошло не так?<br>Мы в боте.</h2>
-        <p class="support__desc">
-          Напиши в <a href="https://t.me/glowshine_bot" class="link">@glowshine_bot</a>
-          через команду <code>/sup</code> и опиши проблему. Поддержка отвечает быстро.
-        </p>
-        <a href="https://t.me/glowshine_bot" class="btn btn--primary">
-          <span class="btn__prefix">$</span> Открыть @glowshine_bot
-        </a>
-      </section>
-
-      <!-- FOOTER -->
-      <footer class="footer">
-        <div class="footer__brand">
-          <span style="color:var(--green)">◆</span>
-          <a href="https://t.me/glowshine_bot" class="footer__bot">@glowshine_bot</a>
+        <!-- Step 4 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">4</div>
+                Подключитесь
+            </div>
+            <ol>
+                <li><span>Выберите добавленный профиль в списке.</span></li>
+                <li><span>Нажмите большую кнопку <strong>Подключить</strong>.</span></li>
+                <li><span>При первом подключении система попросит разрешение на добавление туннеля — нажмите
+                        <strong>Разрешить</strong> (Allow).</span></li>
+            </ol>
         </div>
-        <span class="footer__copy">* + / ○ * _</span>
-      </footer>
 
-    </div><!-- /wrap -->
-  </div>
+        <!-- Success Message -->
+        <div class="highlight">
+            <span class="icon">🎉</span>
+            <strong>Готово!</strong>
+            <span>Значок VPN должен появиться в верхней панели вашего устройства.</span>
+        </div>
 
-  <script>
-    // ── Scroll reveal — облегчённый, без IntersectionObserver проблем в TG ──
-    (function () {
-      var els = document.querySelectorAll('.step, .faq-item');
-      if (!('IntersectionObserver' in window)) return;
-      var obs = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) {
-            e.target.style.opacity = '1';
-            e.target.style.transform = 'translateY(0)';
-            obs.unobserve(e.target);
-          }
+        <!-- Troubleshooting -->
+        <div class="troubleshooting">
+            <div class="troubleshooting-title">
+                <span class="icon">🛠</span> Возможные проблемы
+            </div>
+            <ul>
+                <li><strong>Не подключается:</strong> Выключите VPN, обновите подписку в боте, скопируйте новый ключ и
+                    добавьте его заново (удалив старый).</li>
+                <li><strong>Нет интернета:</strong> Попробуйте переключиться между мобильным интернетом и Wi-Fi, либо
+                    перезагрузите устройство.</li>
+                <li>Если ничего не помогает, напишите в поддержку бота через кнопку в меню <code>/sup</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        window.Telegram.WebApp.ready();
+
+        // Разворачиваем на всю высоту экрана
+        window.Telegram.WebApp.expand();
+
+        // Сообщаем телеграму цвет фона для корректного отображения шторки и статус-бара
+        window.Telegram.WebApp.setBackgroundColor(
+            window.Telegram.WebApp.themeParams.secondary_bg_color || '#ffffff'
+        );
+        window.Telegram.WebApp.setHeaderColor(
+            window.Telegram.WebApp.themeParams.secondary_bg_color || '#ffffff'
+        );
+
+        // Настраиваем встроенную главную кнопку для удобного закрытия инструкции
+        const mainBtn = window.Telegram.WebApp.MainButton;
+        mainBtn.setText('ЗАКРЫТЬ ИНСТРУКЦИЮ');
+        mainBtn.onClick(function () {
+            window.Telegram.WebApp.close();
         });
-      }, { threshold: 0.1 });
-      els.forEach(function(el, i) {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(16px)';
-        el.style.transition = 'opacity .45s ' + (i * 0.06) + 's ease, transform .45s ' + (i * 0.06) + 's ease';
-        obs.observe(el);
-      });
-    })();
-
-    // ── Smooth scroll (якорные ссылки) ──
-    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        var target = document.querySelector(link.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  </script>
+        mainBtn.show();
+    </script>
 </body>
+
 </html>
