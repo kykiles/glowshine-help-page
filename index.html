@@ -5,80 +5,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Инструкция по подключению VPN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            /* Telegram WebApp Theme Variables with fallbacks */
-            --bg-color: var(--tg-theme-bg-color, #f1f1f1);
-            --secondary-bg-color: var(--tg-theme-secondary-bg-color, #ffffff);
-            --text-color: var(--tg-theme-text-color, #222222);
-            --hint-color: var(--tg-theme-hint-color, #888888);
-            --link-color: var(--tg-theme-link-color, #3390ec);
-            --button-color: var(--tg-theme-button-color, #3390ec);
-            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+            /* skillsmp.com design tokens */
+            --bg:          #0a0a0a;
+            --bg-surface:  #111111;
+            --bg-grid:     #1a1a1a;
+            --text:        #f5f5f5;
+            --text-muted:  #9ca3af;
+            --accent:      #D16D6D;
+            --accent-dim:  rgba(209, 109, 109, 0.12);
+            --accent-border: rgba(209, 109, 109, 0.25);
+            --blue:        #3B82F6;
+            --green:       #10B981;
+            --border:      #262626;
 
-            /* Responsive Fluid Spacing & Typography */
+            /* Fluid Spacing & Typography */
             --space-sm: clamp(0.5rem, 1.5vw, 0.75rem);
             --space-md: clamp(1rem, 2.5vw, 1.25rem);
             --space-lg: clamp(1.5rem, 4vw, 2rem);
 
-            --text-sm: clamp(0.875rem, 2vw, 0.95rem);
-            --text-base: clamp(1rem, 2.5vw, 1.1rem);
-            --text-lg: clamp(1.15rem, 3.5vw, 1.3rem);
-            --text-xl: clamp(1.4rem, 4.5vw, 1.8rem);
+            --text-sm:   clamp(0.8rem, 2vw, 0.875rem);
+            --text-base: clamp(0.9rem, 2.5vw, 1rem);
+            --text-lg:   clamp(1rem, 3.5vw, 1.15rem);
+            --text-xl:   clamp(1.3rem, 4.5vw, 1.6rem);
         }
 
-        /* Base Reset & Native Feel */
+        /* Base Reset */
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.5;
-            color: var(--text-color);
-            background-color: var(--bg-color);
+            font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            /* Subtle grid background like skillsmp.com */
+            background-image:
+                linear-gradient(var(--bg-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+            background-size: 32px 32px;
             margin: 0;
             padding: var(--space-md);
             overflow-x: hidden;
-            transition: background-color 0.2s, color 0.2s;
         }
 
-        /* Container Layout */
+        /* Container */
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background-color: var(--secondary-bg-color);
+            background-color: var(--bg-surface);
             padding: var(--space-lg);
-            border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.5);
         }
 
         /* Text Elements */
         h1 {
             text-align: center;
             font-size: var(--text-xl);
-            margin-top: 0;
-            margin-bottom: var(--space-lg);
             font-weight: 700;
+            margin: 0 0 var(--space-lg) 0;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        /* Accent stripe before h1 — terminal cursor effect */
+        h1::before {
+            content: '> ';
+            color: var(--accent);
         }
 
         p {
             font-size: var(--text-base);
             margin: 0 0 var(--space-sm) 0;
+            color: var(--text-muted);
+        }
+
+        p strong, li strong {
+            color: var(--text);
         }
 
         code {
-            background-color: rgba(128, 128, 128, 0.15);
-            padding: 0.2rem 0.4rem;
-            border-radius: 6px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+            background-color: rgba(55, 55, 55, 0.6);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: inherit;
             font-size: calc(var(--text-base) * 0.9);
-            color: var(--text-color);
+            color: var(--green);
+            border: 1px solid var(--border);
         }
 
-        /* Steps Layout */
+        /* Steps */
         .step {
             margin-bottom: var(--space-lg);
         }
@@ -90,18 +115,19 @@
             font-size: var(--text-lg);
             font-weight: 600;
             margin-bottom: var(--space-sm);
+            color: var(--text);
         }
 
         .step-number {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
-            background-color: var(--button-color);
-            color: var(--button-text-color);
-            border-radius: 50%;
-            font-size: var(--text-base);
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent);
+            color: #fff;
+            border-radius: 6px;
+            font-size: var(--text-sm);
             font-weight: 700;
             flex-shrink: 0;
         }
@@ -110,8 +136,7 @@
             margin: 0;
             padding-left: 1.5rem;
             font-size: var(--text-base);
-            color: var(--hint-color);
-            /* To make bullets less aggressive */
+            color: var(--text-muted);
         }
 
         ol li {
@@ -120,15 +145,14 @@
         }
 
         ol li span {
-            color: var(--text-color);
-            /* Keeping text normal while bullets are hint */
+            color: var(--text-muted);
         }
 
-        /* Responsive Grid for Buttons */
+        /* App Download Buttons */
         .app-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
             margin-top: 14px;
         }
 
@@ -137,27 +161,31 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background-color: var(--button-color);
-            color: var(--button-text-color);
+            background-color: transparent;
+            color: var(--text);
             text-decoration: none;
-            padding: 14px 16px;
-            border-radius: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
             font-weight: 600;
             font-size: var(--text-sm);
-            transition: opacity 0.2s, transform 0.1s;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+            font-family: inherit;
         }
 
+        .app-links a:hover,
         .app-links a:active {
-            transform: scale(0.97);
-            opacity: 0.9;
+            border-color: var(--accent);
+            color: var(--accent);
+            background-color: var(--accent-dim);
         }
 
-        /* Highlight & Alert Components */
+        /* Highlight — success block */
         .highlight {
-            background-color: rgba(51, 144, 236, 0.1);
-            border: 1px solid rgba(51, 144, 236, 0.15);
+            background-color: var(--accent-dim);
+            border: 1px solid var(--accent-border);
             padding: var(--space-md);
-            border-radius: 16px;
+            border-radius: 8px;
             margin: var(--space-lg) 0;
             text-align: center;
             font-size: var(--text-base);
@@ -165,14 +193,15 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            color: var(--text);
         }
 
+        /* Troubleshooting block */
         .troubleshooting {
-            background-color: rgba(230, 126, 34, 0.08);
-            /* Warm accent */
-            border: 1px solid rgba(230, 126, 34, 0.2);
+            background-color: rgba(59, 130, 246, 0.06);
+            border: 1px solid rgba(59, 130, 246, 0.2);
             padding: var(--space-md);
-            border-radius: 16px;
+            border-radius: 8px;
         }
 
         .troubleshooting-title {
@@ -182,21 +211,23 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: var(--text);
         }
 
         .troubleshooting ul {
             padding-left: 1.25rem;
             margin: 0;
             font-size: var(--text-sm);
+            color: var(--text-muted);
         }
 
         .troubleshooting li {
             margin-bottom: 8px;
         }
 
-        /* Icon Utility */
+        /* Icon */
         .icon {
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
     </style>
 </head>
@@ -298,13 +329,9 @@
         // Разворачиваем на всю высоту экрана
         window.Telegram.WebApp.expand();
 
-        // Сообщаем телеграму цвет фона для корректного отображения шторки и статус-бара
-        window.Telegram.WebApp.setBackgroundColor(
-            window.Telegram.WebApp.themeParams.secondary_bg_color || '#ffffff'
-        );
-        window.Telegram.WebApp.setHeaderColor(
-            window.Telegram.WebApp.themeParams.secondary_bg_color || '#ffffff'
-        );
+        // Тёмный фон в стиле skillsmp.com
+        window.Telegram.WebApp.setBackgroundColor('#0a0a0a');
+        window.Telegram.WebApp.setHeaderColor('#0a0a0a');
 
         // Настраиваем встроенную главную кнопку для удобного закрытия инструкции
         const mainBtn = window.Telegram.WebApp.MainButton;
